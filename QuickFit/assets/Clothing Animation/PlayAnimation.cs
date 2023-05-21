@@ -5,9 +5,11 @@ using UnityEngine.EventSystems;
 
 public class PlayAnimation : MonoBehaviour {
     private Animator anim;
+    GameObject Shirt;
 
     void Start()
     {
+        Shirt = this.transform.GetChild(0).gameObject;
         anim = GetComponent<Animator>();
     }
 
@@ -15,8 +17,10 @@ public class PlayAnimation : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Shirt")) {
             Debug.Log("TRIGGERED!!!");
+            Shirt.GetComponent<Renderer>().material = other.GetComponent<Renderer>().material;
             anim.Play("ShirtAnimation");
         }
+
     }
     
 
