@@ -35,6 +35,12 @@ public class PlayAnimation : MonoBehaviour {
 
     */
 
+    private void OnTriggerExit(Collider other) {
+        if (other.CompareTag("Shirt")) {
+            anim.Play("Wearing");
+        }
+    }
+
 
 
 
