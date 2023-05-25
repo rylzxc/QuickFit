@@ -6,43 +6,52 @@ using UnityEngine.EventSystems;
 public class PlayAnimation : MonoBehaviour {
     private Animator anim;
     GameObject Shirt;
+    GameObject Pant;
+    bool ShirtWorn;
+    bool PantWorn;
+
 
     void Start()
     {
-        Shirt = this.transform.GetChild(0).gameObject;
+        Pant = this.transform.GetChild(0).gameObject;
+        Shirt = this.transform.GetChild(1).gameObject;
         anim = GetComponent<Animator>();
+        ShirtWorn = false;
+        PantWorn = false;
     }
 
     
     private void OnTriggerEnter(Collider other) {
         if (other.CompareTag("Shirt")) {
-            Debug.Log("TRIGGERED!!!");
+            ShirtWorn = true;
             Shirt.GetComponent<Renderer>().material = other.GetComponent<Renderer>().material;
-            anim.Play("ShirtAnimation");
+            if (PantWorn) {
+                anim.Play("ShirtAnimationWithPantWorn");
+            } else {
+                anim.Play("ShirtAnimation");
+            }
+
+        } else if(other.CompareTag("Pant")) {
+            PantWorn = true;
+            Pant.GetComponent<Renderer>().material = other.GetComponent<Renderer>().material;
+            if (ShirtWorn) {
+                anim.Play("PantAnimationWithShirtWorn");
+            } else {
+                anim.Play("PantAnimation");
+            }
+
         }
 
     }
     
-
-    
-    private void OnMouseUp() {
-        Debug.Log("TRIGGERED!!!");
-        anim.Play("ShirtAnimation");
-    }
-    
-
-
-    /*
-    private void OnMouseEnter() {
-        if trigg
-    }
-
-    */
-
     private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Shirt")) {
-            anim.Play("Wearing");
-        }
+        anim.Play("WearingBoth");
+    }
+
+    void Update()
+    {
+        Debug.Log("ShirtWorn: " + ShirtWorn);
+        Debug.Log("PantWorn: " + PantWorn);
     }
 
 
